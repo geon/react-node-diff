@@ -54,6 +54,10 @@ export function evaluateReactNode(node: ReactNode): EvaluatedReactNode {
                 categorized.node.type(categorized.node.props)
             );
         }
+
+        case "class": {
+            throw new Error("Class component evaluation not implemented.");
+        }
     }
 
     throw new Error("Not implemented.");

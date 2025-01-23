@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 import { evaluateReactNode } from "./evaluate-react-node";
-import React, { type ReactNode } from "react";
+import React, { Component, type ReactNode } from "react";
 
 test("evaluateReactNode simple types.", () => {
     const testString = "string";
@@ -36,4 +36,9 @@ test("evaluateReactNode function", () => {
             </Test>
         )
     ).toBe("test");
+});
+
+test("evaluateReactNode fail with class component", () => {
+    class Test extends Component {}
+    expect(() => evaluateReactNode(<Test />)).toThrow();
 });
