@@ -18,7 +18,19 @@ export function evaluateReactNode(node: ReactNode): EvaluatedReactNode {
         }
 
         case "html": {
-            return categorized.node;
+            // Html nodes don't need further evaluation if the children are simple.
+            return getCategorizedReactNode(categorized.node.props.children)
+                .type === "simple"
+                ? categorized.node
+                : {
+                      ...categorized.node,
+                      props: {
+                          ...categorized.node.props,
+                          children: evaluateReactNode(
+                              categorized.node.props.children
+                          ),
+                      },
+                  };
         }
 
         case "iterable": {
