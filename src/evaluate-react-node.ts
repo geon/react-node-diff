@@ -5,6 +5,7 @@ export type EvaluatedReactNode =
     | Omit<ReactHTMLElement<HTMLElement>, "ref">
     | string
     | number
+    | ReadonlyArray<EvaluatedReactNode>
     | boolean
     | null
     | undefined;
@@ -18,6 +19,10 @@ export function evaluateReactNode(node: ReactNode): EvaluatedReactNode {
 
         case "html": {
             return categorized.node;
+        }
+
+        case "iterable": {
+            return [...categorized.node].map(evaluateReactNode);
         }
     }
 

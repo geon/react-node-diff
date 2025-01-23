@@ -21,3 +21,8 @@ test("evaluateReactNode html", () => {
     const anchor = <a href={url}>Fork me</a>;
     expect(evaluateReactNode(anchor)).toBe(anchor);
 });
+
+test("evaluateReactNode array", () => {
+    const elements = ["string", 123, true, null];
+    expect(evaluateReactNode(elements)).toStrictEqual(elements);
+});
