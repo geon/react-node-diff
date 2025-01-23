@@ -16,6 +16,7 @@ export type EvaluatedReactNode =
     | EvaluatedHtml
     | string
     | number
+    | ReadonlyArray<EvaluatedReactNode>
     | boolean
     | null
     | undefined;
@@ -42,6 +43,10 @@ export function evaluateReactNode(node: ReactNode): EvaluatedReactNode {
                     children: categorizedChildren.node,
                 },
             };
+        }
+
+        case "iterable": {
+            return [...categorized.node].map(evaluateReactNode);
         }
     }
 
