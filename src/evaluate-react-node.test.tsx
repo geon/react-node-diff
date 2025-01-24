@@ -79,3 +79,10 @@ test("evaluateReactNode children in portal", () => {
         )
     );
 });
+
+test("evaluateReactNode fail with invalid ReactNode", () => {
+    expect(() =>
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        evaluateReactNode({ not_a_valid_react_node: true } as any as ReactNode)
+    ).toThrow();
+});
