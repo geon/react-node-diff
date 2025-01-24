@@ -198,3 +198,32 @@ test("diffReactNode same portal", () => {
         )
     ).toStrictEqual(null);
 });
+
+test("diffReactNode changed portal content", () => {
+    const looksLikeABrowserDomNodeToReact = { nodeType: 1 } as Element;
+    expect(
+        diffReactNode(
+            <div>
+                {createPortal(
+                    "old portal content",
+                    looksLikeABrowserDomNodeToReact
+                )}
+            </div>,
+            <div>
+                {createPortal(
+                    "new portal content",
+                    looksLikeABrowserDomNodeToReact
+                )}
+            </div>
+        )
+    ).toStrictEqual({
+        children: {
+            children: {
+                setNode: "new portal content",
+                type: "setNode",
+            },
+            type: "portal",
+        },
+        type: "children",
+    });
+});
