@@ -11,6 +11,10 @@ export type ReactNodeDiff =
           readonly type: "children";
           readonly children: ReactNodeDiff;
       }
+    | {
+          readonly type: "array";
+          readonly array: readonly ReactNodeDiff[];
+      }
     | null;
 
 export function diffReactNode(
@@ -59,9 +63,36 @@ export function diffReactNode(
         if (oldCategorized.type !== "iterable") {
             return { type: "setNode", setNode: newCategorized.node };
         }
+        const arrayDiff = diffArray(
+            oldCategorized.node as EvaluatedReactNode[],
+            newCategorized.node as EvaluatedReactNode[]
+        );
+        if (arrayDiff) {
+            return {
+                type: "array",
+                array: arrayDiff,
+            };
+        }
 
         return null;
     }
 
     throw new Error("Not implemented.");
+}
+
+function diffArray(
+    oldNode: readonly EvaluatedReactNode[],
+    newNode: readonly EvaluatedReactNode[]
+) {
+    // TODO: Add reordering detection.
+    const diffs = newNode.map((newSubNode, index) => {
+        const oldSubNode = oldNode[index];
+        return diffReactNode(oldSubNode, newSubNode);
+    });
+
+    if (diffs.every((diff) => diff === null)) {
+        return undefined;
+    }
+
+    return diffs;
 }
