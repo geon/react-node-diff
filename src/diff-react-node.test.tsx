@@ -38,3 +38,10 @@ test("diffReactNode simple vs intrinsic", () => {
         setNode: <div />,
     });
 });
+
+test("diffReactNode intrinsic vs intrinsic", () => {
+    expect(diffReactNode(<span />, <div />)).toStrictEqual({
+        type: "setNode",
+        setNode: <div />,
+    });
+});
