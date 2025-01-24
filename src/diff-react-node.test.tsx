@@ -86,3 +86,13 @@ test("diffReactNode simple vs array", () => {
         setNode: list,
     });
 });
+
+test("diffReactNode same array", () => {
+    const list = (
+        <ul>
+            <li>[x] Milk</li>
+            <li>[ ] Bread</li>
+        </ul>
+    );
+    expect(diffReactNode(list, list)).toStrictEqual(null);
+});
