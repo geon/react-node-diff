@@ -28,7 +28,8 @@ export function diffReactNode(
     if (newCategorized.type === "html") {
         if (
             oldCategorized.type !== "html" ||
-            newCategorized.node.type !== oldCategorized.node.type
+            newCategorized.node.type !== oldCategorized.node.type ||
+            newCategorized.node.key !== oldCategorized.node.key
         ) {
             return { type: "setNode", setNode: newCategorized.node };
         }
