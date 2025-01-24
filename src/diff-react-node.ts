@@ -59,5 +59,11 @@ export function diffReactNode(
         return null;
     }
 
+    if (newCategorized.type === "iterable") {
+        if (oldCategorized.type !== "iterable") {
+            return { type: "setNode", setNode: newCategorized.node };
+        }
+    }
+
     throw new Error("Not implemented.");
 }

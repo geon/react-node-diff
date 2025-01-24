@@ -73,3 +73,16 @@ test("diffReactNode replace child", () => {
         children: { type: "setNode", setNode: "new child" },
     });
 });
+
+test("diffReactNode simple vs array", () => {
+    const list = (
+        <ul>
+            <li>[x] Milk</li>
+            <li>[ ] Bread</li>
+        </ul>
+    );
+    expect(diffReactNode("string", list)).toStrictEqual({
+        type: "setNode",
+        setNode: list,
+    });
+});
