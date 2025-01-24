@@ -1,4 +1,4 @@
-import { ReactHTMLElement, ReactNode } from "react";
+import { ReactHTMLElement, ReactNode, ReactPortal } from "react";
 import { getCategorizedReactNode } from "./categorized-react-node";
 
 export type EvaluatedReactNode =
@@ -6,6 +6,7 @@ export type EvaluatedReactNode =
     | string
     | number
     | ReadonlyArray<EvaluatedReactNode>
+    | ReactPortal
     | boolean
     | null
     | undefined;
@@ -46,7 +47,18 @@ export function evaluateReactNode(node: ReactNode): EvaluatedReactNode {
         case "class": {
             throw new Error("Class component evaluation not implemented.");
         }
-    }
 
-    throw new Error("Not implemented.");
+        case "portal": {
+            return {
+                ...categorized.node,
+                children: evaluateReactNode(categorized.node.children),
+            };
+        }
+
+        default: {
+            throw new Error("Unknown ReactNode.", {
+                cause: categorized satisfies never,
+            });
+        }
+    }
 }

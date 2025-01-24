@@ -1,6 +1,7 @@
 import { expect, test } from "vitest";
 import { evaluateReactNode } from "./evaluate-react-node";
 import React, { Component, ReactNode } from "react";
+import { createPortal } from "react-dom";
 
 test("evaluateReactNode simple types.", () => {
     const testString = "string";
@@ -56,4 +57,18 @@ test("evaluateReactNode children", () => {
             </p>
         )
     ).toStrictEqual(<p>wow - so nested - much component</p>);
+});
+
+test("evaluateReactNode children in portal", () => {
+    const looksLikeABrowserDomNodeToReact = { nodeType: 1 } as Element;
+    const PortalContent = () => "portal content";
+    expect(
+        evaluateReactNode(
+            createPortal(<PortalContent />, looksLikeABrowserDomNodeToReact)
+        )
+    ).toStrictEqual(
+        evaluateReactNode(
+            createPortal("portal content", looksLikeABrowserDomNodeToReact)
+        )
+    );
 });
