@@ -25,5 +25,12 @@ export function diffReactNode(
             : null;
     }
 
+    if (newCategorized.type === "html") {
+        if (oldCategorized.type !== "html") {
+            return { type: "setNode", setNode: newCategorized.node };
+        }
+        return null;
+    }
+
     throw new Error("Not implemented.");
 }
