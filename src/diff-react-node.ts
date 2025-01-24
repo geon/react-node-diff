@@ -94,7 +94,10 @@ function diffArray(
         return diffReactNode(oldSubNode, newSubNode);
     });
 
-    if (diffs.every((diff) => diff === null)) {
+    if (
+        oldNode.length === newNode.length &&
+        diffs.every((diff) => diff === null)
+    ) {
         return undefined;
     }
 

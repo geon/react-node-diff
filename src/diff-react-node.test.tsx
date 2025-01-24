@@ -126,3 +126,25 @@ test("diffReactNode changed array element", () => {
         type: "children",
     });
 });
+
+test("diffReactNode delete array element", () => {
+    expect(
+        diffReactNode(
+            <ul>
+                <li>[x] Milk</li>
+                <li>[ ] Bread</li>
+                <li>[ ] Eggs</li>
+            </ul>,
+            <ul>
+                <li>[x] Milk</li>
+                <li>[ ] Bread</li>
+            </ul>
+        )
+    ).toStrictEqual({
+        children: {
+            array: [null, null],
+            type: "array",
+        },
+        type: "children",
+    });
+});
