@@ -148,3 +148,32 @@ test("diffReactNode delete array element", () => {
         type: "children",
     });
 });
+
+test("diffReactNode add array element", () => {
+    expect(
+        diffReactNode(
+            <ul>
+                <li>[x] Milk</li>
+                <li>[ ] Bread</li>
+            </ul>,
+            <ul>
+                <li>[x] Milk</li>
+                <li>[ ] Bread</li>
+                <li>[ ] Eggs</li>
+            </ul>
+        )
+    ).toStrictEqual({
+        children: {
+            array: [
+                null,
+                null,
+                {
+                    setNode: <li>[ ] Eggs</li>,
+                    type: "setNode",
+                },
+            ],
+            type: "array",
+        },
+        type: "children",
+    });
+});
