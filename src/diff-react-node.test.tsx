@@ -1,5 +1,6 @@
 import { expect, test } from "vitest";
 import { diffReactNode } from "./diff-react-node";
+import React from "react";
 
 test("diffReactNode simple", () => {
     expect(diffReactNode("string", "string")).toBe(null);
@@ -27,5 +28,13 @@ test("diffReactNode simple", () => {
     expect(diffReactNode(null, undefined)).toStrictEqual({
         type: "setNode",
         setNode: undefined,
+    });
+});
+
+test("diffReactNode simple vs intrinsic", () => {
+    expect(diffReactNode(<div />, <div />)).toStrictEqual(null);
+    expect(diffReactNode("string", <div />)).toStrictEqual({
+        type: "setNode",
+        setNode: <div />,
     });
 });
