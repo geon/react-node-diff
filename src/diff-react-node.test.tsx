@@ -65,3 +65,11 @@ test("diffReactNode add child", () => {
         setNode: <p>new child</p>,
     });
 });
+
+test("diffReactNode replace child", () => {
+    expect(diffReactNode(<p>same</p>, <p>same</p>)).toStrictEqual(null);
+    expect(diffReactNode(<p>old child</p>, <p>new child</p>)).toStrictEqual({
+        type: "children",
+        children: { type: "setNode", setNode: "new child" },
+    });
+});
