@@ -57,3 +57,11 @@ test("diffReactNode intrinsic key", () => {
         setNode: <div key="new key" />,
     });
 });
+
+test("diffReactNode add child", () => {
+    expect(diffReactNode(<p>same</p>, <p>same</p>)).toStrictEqual(null);
+    expect(diffReactNode(<p></p>, <p>new child</p>)).toStrictEqual({
+        type: "setNode",
+        setNode: <p>new child</p>,
+    });
+});
