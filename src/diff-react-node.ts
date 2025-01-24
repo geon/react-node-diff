@@ -33,6 +33,13 @@ export function diffReactNode(
         ) {
             return { type: "setNode", setNode: newCategorized.node };
         }
+
+        if ("children" in newCategorized.node.props) {
+            if (!("children" in oldCategorized.node.props)) {
+                return { type: "setNode", setNode: newCategorized.node };
+            }
+        }
+
         return null;
     }
 
