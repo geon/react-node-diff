@@ -1,5 +1,6 @@
 import { expect, test } from "vitest";
 import { getCategorizedReactNode } from "./categorized-react-node";
+import React from "react";
 
 test("getCategorizedReactNode simple", () => {
     expect(getCategorizedReactNode("string")).toHaveProperty("type", "simple");
@@ -11,4 +12,8 @@ test("getCategorizedReactNode simple", () => {
 
 test("getCategorizedReactNode iterable", () => {
     expect(getCategorizedReactNode([1, 2])).toHaveProperty("type", "iterable");
+});
+
+test("getCategorizedReactNode html", () => {
+    expect(getCategorizedReactNode(<div />)).toHaveProperty("type", "html");
 });
