@@ -1,12 +1,16 @@
-import { ReactHTMLElement, ReactNode, ReactPortal } from "react";
+import { ReactHTMLElement, ReactNode } from "react";
 import { getCategorizedReactNode } from "./categorized-react-node";
+
+interface EvaluatedReactPortal extends ReactHTMLElement<HTMLElement> {
+    children: EvaluatedReactNode;
+}
 
 export type EvaluatedReactNode =
     | Omit<ReactHTMLElement<HTMLElement>, "ref">
     | string
     | number
     | ReadonlyArray<EvaluatedReactNode>
-    | ReactPortal
+    | EvaluatedReactPortal
     | boolean
     | null
     | undefined;
@@ -52,7 +56,7 @@ export function evaluateReactNode(node: ReactNode): EvaluatedReactNode {
             return {
                 ...categorized.node,
                 children: evaluateReactNode(categorized.node.children),
-            };
+            } as EvaluatedReactPortal;
         }
 
         default: {

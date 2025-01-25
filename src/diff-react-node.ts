@@ -15,6 +15,10 @@ export type ReactNodeDiff =
           readonly type: "array";
           readonly array: readonly ReactNodeDiff[];
       }
+    | {
+          readonly type: "portal";
+          readonly children: ReactNodeDiff;
+      }
     | null;
 
 export function diffReactNode(
@@ -72,6 +76,14 @@ export function diffReactNode(
                 type: "array",
                 array: arrayDiff,
             };
+        }
+
+        return null;
+    }
+
+    if (newCategorized.type === "portal") {
+        if (oldCategorized.type !== "portal") {
+            return { type: "setNode", setNode: newCategorized.node };
         }
 
         return null;
