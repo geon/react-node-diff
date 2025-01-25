@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 import { getCategorizedReactNode } from "./categorized-react-node";
-import React from "react";
+import React, { Component } from "react";
 
 test("getCategorizedReactNode simple", () => {
     expect(getCategorizedReactNode("string")).toHaveProperty("type", "simple");
@@ -24,4 +24,9 @@ test("getCategorizedReactNode function", () => {
         "type",
         "function"
     );
+});
+
+test("getCategorizedReactNode class", () => {
+    class Test extends Component {}
+    expect(getCategorizedReactNode(<Test />)).toHaveProperty("type", "class");
 });
