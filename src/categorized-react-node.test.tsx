@@ -17,3 +17,11 @@ test("getCategorizedReactNode iterable", () => {
 test("getCategorizedReactNode html", () => {
     expect(getCategorizedReactNode(<div />)).toHaveProperty("type", "html");
 });
+
+test("getCategorizedReactNode function", () => {
+    const Test = () => "string";
+    expect(getCategorizedReactNode(<Test />)).toHaveProperty(
+        "type",
+        "function"
+    );
+});
