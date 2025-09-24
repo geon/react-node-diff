@@ -42,3 +42,18 @@ test("evaluateReactNode fail with class component", () => {
     class Test extends Component {}
     expect(() => evaluateReactNode(<Test />)).toThrow();
 });
+
+test("evaluateReactNode children", () => {
+    const TestNestedComponent = (props: { children: ReactNode }) =>
+        props.children;
+
+    expect(
+        evaluateReactNode(
+            <p>
+                <TestNestedComponent>
+                    wow - so nested - much component
+                </TestNestedComponent>
+            </p>
+        )
+    ).toStrictEqual(<p>wow - so nested - much component</p>);
+});

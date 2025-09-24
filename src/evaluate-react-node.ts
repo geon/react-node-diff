@@ -32,15 +32,12 @@ export function evaluateReactNode(node: ReactNode): EvaluatedReactNode {
             const categorizedChildren = getCategorizedReactNode(
                 categorized.node.props.children
             );
-            if (categorizedChildren.type !== "simple") {
-                throw new Error("Not implemented.");
-            }
 
             return {
                 ...categorized.node,
                 props: {
                     ...categorized.node.props,
-                    children: categorizedChildren.node,
+                    children: evaluateReactNode(categorizedChildren.node),
                 },
             };
         }
