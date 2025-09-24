@@ -1,6 +1,7 @@
 import { expect, test } from "vitest";
 import { evaluateReactNode } from "./evaluate-react-node";
 import React, { Component, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 
 test("evaluateReactNode simple types.", () => {
     const testString = "string";
@@ -63,4 +64,18 @@ test("evaluateReactNode exact child", () => {
     const Component = () => componentContent;
     const component = <Component />;
     expect(evaluateReactNode(component)).toBe(componentContent);
+});
+
+test("evaluateReactNode children in portal", () => {
+    const looksLikeABrowserDomNodeToReact = { nodeType: 1 };
+    const PortalContent = () => "portal content";
+    expect(
+        evaluateReactNode(
+            createPortal(<PortalContent />, looksLikeABrowserDomNodeToReact)
+        )
+    ).toStrictEqual(
+        evaluateReactNode(
+            createPortal("portal content", looksLikeABrowserDomNodeToReact)
+        )
+    );
 });

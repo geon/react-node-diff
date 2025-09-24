@@ -12,11 +12,16 @@ export type EvaluatedHtml = Omit<
     };
 };
 
+export interface EvaluatedReactPortal extends ReactHTMLElement<HTMLElement> {
+    children: EvaluatedReactNode;
+}
+
 export type EvaluatedReactNode =
     | EvaluatedHtml
     | string
     | number
     | ReadonlyArray<EvaluatedReactNode>
+    | EvaluatedReactPortal
     | boolean
     | null
     | undefined;
@@ -60,7 +65,18 @@ export function evaluateReactNode(node: ReactNode): EvaluatedReactNode {
         case "class": {
             throw new Error("Class component evaluation not implemented.");
         }
-    }
 
-    throw new Error("Not implemented.");
+        case "portal": {
+            return {
+                ...categorized.node,
+                children: evaluateReactNode(categorized.node.children),
+            } as EvaluatedReactPortal;
+        }
+
+        default: {
+            throw new Error("Unknown ReactNode.", {
+                cause: categorized satisfies never,
+            });
+        }
+    }
 }
