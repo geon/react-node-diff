@@ -3,6 +3,7 @@ import {
     type ReactElement,
     type ReactHTMLElement,
     type ReactNode,
+    type ReactPortal,
 } from "react";
 
 type FunctionReactElement = ReactElement<
@@ -23,7 +24,8 @@ export type CategorizedReactNode =
     | { type: "iterable"; node: Iterable<ReactNode> }
     | { type: "html"; node: ReactHTMLElement<HTMLElement> }
     | { type: "function"; node: FunctionReactElement }
-    | { type: "class"; node: ClassReactElement };
+    | { type: "class"; node: ClassReactElement }
+    | { type: "portal"; node: ReactPortal };
 
 export function getCategorizedReactNode(node: ReactNode): CategorizedReactNode {
     if (node === null || typeof node !== "object") {
@@ -48,6 +50,10 @@ export function getCategorizedReactNode(node: ReactNode): CategorizedReactNode {
                   type: "class",
                   node: node as ClassReactElement,
               };
+    }
+
+    if ("children" in node) {
+        return { type: "portal", node };
     }
 
     throw new Error("Unknown ReactNode category.", { cause: node });

@@ -1,6 +1,7 @@
 import { expect, test } from "vitest";
 import { getCategorizedReactNode } from "./categorized-react-node";
 import React, { Component } from "react";
+import { createPortal } from "react-dom";
 
 test("getCategorizedReactNode simple", () => {
     expect(getCategorizedReactNode("string")).toHaveProperty("type", "simple");
@@ -29,4 +30,14 @@ test("getCategorizedReactNode function", () => {
 test("getCategorizedReactNode class", () => {
     class Test extends Component {}
     expect(getCategorizedReactNode(<Test />)).toHaveProperty("type", "class");
+});
+
+test("getCategorizedReactNode portal", () => {
+    const looksLikeABrowserDomNodeToReact = { nodeType: 1 };
+    const PortalContent = () => "portal content";
+    expect(
+        getCategorizedReactNode(
+            createPortal(<PortalContent />, looksLikeABrowserDomNodeToReact)
+        )
+    ).toHaveProperty("type", "portal");
 });
