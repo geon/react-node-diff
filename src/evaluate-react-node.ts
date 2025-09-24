@@ -33,6 +33,11 @@ export function evaluateReactNode(node: ReactNode): EvaluatedReactNode {
                 categorized.node.props.children
             );
 
+            if (categorizedChildren.type === "simple") {
+                // Html nodes don't need further evaluation if the children are simple.
+                return categorized.node as EvaluatedHtml;
+            }
+
             return {
                 ...categorized.node,
                 props: {

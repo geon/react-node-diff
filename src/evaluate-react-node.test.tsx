@@ -57,3 +57,10 @@ test("evaluateReactNode children", () => {
         )
     ).toStrictEqual(<p>wow - so nested - much component</p>);
 });
+
+test("evaluateReactNode exact child", () => {
+    const componentContent = <p>component content</p>;
+    const Component = () => componentContent;
+    const component = <Component />;
+    expect(evaluateReactNode(component)).toBe(componentContent);
+});
