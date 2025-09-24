@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 import { evaluateReactNode } from "./evaluate-react-node";
-import React from "react";
+import React, { type ReactNode } from "react";
 
 test("evaluateReactNode simple types.", () => {
     const testString = "string";
@@ -25,4 +25,15 @@ test("evaluateReactNode html", () => {
 test("evaluateReactNode array", () => {
     const elements = ["string", 123, true, null];
     expect(evaluateReactNode(elements)).toStrictEqual(elements);
+});
+
+test("evaluateReactNode function", () => {
+    const Test = (props: { children: ReactNode }) => props.children;
+    expect(
+        evaluateReactNode(
+            <Test>
+                <Test>test</Test>
+            </Test>
+        )
+    ).toBe("test");
 });

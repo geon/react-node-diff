@@ -48,6 +48,12 @@ export function evaluateReactNode(node: ReactNode): EvaluatedReactNode {
         case "iterable": {
             return [...categorized.node].map(evaluateReactNode);
         }
+
+        case "function": {
+            return evaluateReactNode(
+                categorized.node.type(categorized.node.props)
+            );
+        }
     }
 
     throw new Error("Not implemented.");
