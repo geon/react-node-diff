@@ -1,6 +1,7 @@
 import { expect, test } from "vitest";
 import { diffReactNode } from "./diff-react-node";
 import React from "react";
+import { createPortal } from "react-dom";
 
 test("diffReactNode simple", () => {
     expect(diffReactNode("string", "string")).toBe(null);
@@ -176,4 +177,24 @@ test("diffReactNode add array element", () => {
         },
         type: "children",
     });
+});
+
+test("diffReactNode same portal", () => {
+    const looksLikeABrowserDomNodeToReact = { nodeType: 1 };
+    expect(
+        diffReactNode(
+            <div>
+                {createPortal(
+                    "portal content",
+                    looksLikeABrowserDomNodeToReact
+                )}
+            </div>,
+            <div>
+                {createPortal(
+                    "portal content",
+                    looksLikeABrowserDomNodeToReact
+                )}
+            </div>
+        )
+    ).toStrictEqual(null);
 });
