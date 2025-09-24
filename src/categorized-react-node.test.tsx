@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 import { getCategorizedReactNode } from "./categorized-react-node";
-import React, { Component } from "react";
+import React, { Component, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 
 test("getCategorizedReactNode simple", () => {
@@ -40,4 +40,13 @@ test("getCategorizedReactNode portal", () => {
             createPortal(<PortalContent />, looksLikeABrowserDomNodeToReact)
         )
     ).toHaveProperty("type", "portal");
+});
+
+test("getCategorizedReactNode fail with invalid ReactNode", () => {
+    expect(() =>
+        getCategorizedReactNode({
+            not_a_valid_react_node: true,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any as ReactNode)
+    ).toThrow();
 });
