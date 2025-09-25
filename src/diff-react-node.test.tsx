@@ -96,3 +96,33 @@ test("diffReactNode same array", () => {
     );
     expect(diffReactNode(list, list)).toStrictEqual(null);
 });
+
+test("diffReactNode changed array element", () => {
+    expect(
+        diffReactNode(
+            <ul>
+                <li>[x] Milk</li>
+                <li>[ ] Bread</li>
+            </ul>,
+            <ul>
+                <li>[x] Milk</li>
+                <li>[x] Bread</li>
+            </ul>
+        )
+    ).toStrictEqual({
+        children: {
+            array: [
+                null,
+                {
+                    children: {
+                        setNode: "[x] Bread",
+                        type: "setNode",
+                    },
+                    type: "children",
+                },
+            ],
+            type: "array",
+        },
+        type: "children",
+    });
+});
