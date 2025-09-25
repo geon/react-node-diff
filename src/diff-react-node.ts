@@ -90,6 +90,19 @@ export function diffReactNode(
             return { type: "setNode", setNode: newCategorized.node };
         }
 
+        const childrenDiff = diffReactNode(
+            oldCategorized.node.children,
+            newCategorized.node.children
+        );
+        if (childrenDiff) {
+            return (
+                childrenDiff && {
+                    type: "portal",
+                    children: childrenDiff,
+                }
+            );
+        }
+
         return null;
     }
 
