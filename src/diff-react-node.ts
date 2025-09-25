@@ -2,10 +2,16 @@ import type { ReactNode } from "react";
 import { evaluateReactNode } from "./evaluate-react-node";
 import { getCategorizedEvaluatedReactNode } from "./categorized-evaluated-react-node";
 
-export type ReactNodeDiff = {
-    readonly type: "setNode";
-    readonly setNode: ReactNode;
-} | null;
+export type ReactNodeDiff =
+    | {
+          readonly type: "setNode";
+          readonly setNode: ReactNode;
+      }
+    | {
+          readonly type: "children";
+          readonly children: ReactNodeDiff;
+      }
+    | null;
 
 export function diffReactNode(
     oldUncategorizedNode: ReactNode,
@@ -37,6 +43,16 @@ export function diffReactNode(
         if ("children" in newCategorized.node.props) {
             if (!("children" in oldCategorized.node.props)) {
                 return { type: "setNode", setNode: newCategorized.node };
+            }
+            const childrenDiff = diffReactNode(
+                oldCategorized.node.props.children,
+                newCategorized.node.props.children
+            );
+            if (childrenDiff) {
+                return {
+                    type: "children",
+                    children: childrenDiff,
+                };
             }
         }
 
