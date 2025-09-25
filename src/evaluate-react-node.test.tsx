@@ -1,5 +1,6 @@
 import { expect, test } from "vitest";
 import { evaluateReactNode } from "./evaluate-react-node";
+import React from "react";
 
 test("evaluateReactNode simple types.", () => {
     const testString = "string";
@@ -13,4 +14,10 @@ test("evaluateReactNode simple types.", () => {
     expect(evaluateReactNode(testBoolean)).toBe(testBoolean);
     expect(evaluateReactNode(testNull)).toBe(testNull);
     expect(evaluateReactNode(testUndefined)).toBe(testUndefined);
+});
+
+test("evaluateReactNode html", () => {
+    const url = "https://github.com/geon/react-node-diff";
+    const anchor = <a href={url}>Fork me</a>;
+    expect(evaluateReactNode(anchor)).toStrictEqual(anchor);
 });
